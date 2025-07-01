@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, Smartphone, Building2, Wallet } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 
 interface PaymentPageProps {
   onNavigate: (page: string) => void;
@@ -9,8 +9,8 @@ type PaymentStep = 'amount' | 'method' | 'success';
 
 const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const [currentStep, setCurrentStep] = useState<PaymentStep>('amount');
-  const [donationAmount, setDonationAmount] = useState('80000');
-  const [selectedAmount, setSelectedAmount] = useState<number>(80000);
+  const [donationAmount, setDonationAmount] = useState('');
+  const [selectedAmount, setSelectedAmount] = useState<number>(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -144,9 +144,9 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       <div className="bg-white rounded-2xl p-6 border-2 border-gray-200">
         <div className="text-center">
           <div className="text-3xl font-bold text-gray-800 mb-2">
-            Rp {parseInt(donationAmount).toLocaleString('id-ID')}
+            Rp {donationAmount ? parseInt(donationAmount).toLocaleString('id-ID') : '0'}
           </div>
-          <div className="text-gray-500 text-sm">atau</div>
+          <div className="text-gray-500 text-sm">Masukkan nominal donasi</div>
         </div>
       </div>
 
@@ -266,44 +266,6 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
             </div>
           </button>
         ))}
-      </div>
-
-      <div className="text-xs text-gray-500 text-center">
-        atau
-      </div>
-
-      {/* Alternative Payment Methods */}
-      <div className="grid grid-cols-2 gap-3">
-        <button className="p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 transition-colors">
-          <div className="text-center">
-            <div className="w-8 h-8 bg-green-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-              <Wallet className="w-4 h-4 text-green-600" />
-            </div>
-            <div className="text-sm font-medium text-gray-800">GoPay</div>
-          </div>
-        </button>
-        <button className="p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 transition-colors">
-          <div className="text-center">
-            <div className="w-8 h-8 bg-purple-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-              <Smartphone className="w-4 h-4 text-purple-600" />
-            </div>
-            <div className="text-sm font-medium text-gray-800">OVO</div>
-          </div>
-        </button>
-      </div>
-
-      <div className="space-y-2">
-        <button className="w-full p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 transition-colors text-left">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <div className="font-medium text-gray-800">DANA</div>
-              <div className="text-sm text-gray-500">E-Wallet</div>
-            </div>
-          </div>
-        </button>
       </div>
     </div>
   );

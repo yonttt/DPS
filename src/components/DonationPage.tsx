@@ -1,36 +1,11 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Heart, MapPin, Calendar, Share2, Users, Target } from 'lucide-react';
+import React from 'react';
+import { ArrowLeft, MapPin, Calendar, Users, Target } from 'lucide-react';
 
 interface DonationPageProps {
   onNavigate: (page: string) => void;
 }
 
 const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
-  const [donationAmount, setDonationAmount] = useState('');
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-
-  const quickAmounts = [50000, 100000, 250000, 500000, 1000000];
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const handleAmountSelect = (amount: number) => {
-    setSelectedAmount(amount);
-    setDonationAmount(amount.toString());
-  };
-
-  const handleDonate = () => {
-    if (donationAmount) {
-      // Navigate to payment page instead of showing alert
-      onNavigate('payment');
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -45,14 +20,7 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
               <span>Kembali</span>
             </button>
             
-            <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                <Share2 className="w-6 h-6" />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                <Heart className="w-6 h-6" />
-              </button>
-            </div>
+            <div className="w-8"></div> {/* Spacer for balance */}
           </div>
         </div>
       </header>
@@ -117,56 +85,13 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Donation Form */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">Donasi Sekarang</h2>
-          
-          {/* Quick Amount Buttons */}
-          <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-6">
-            {quickAmounts.map((amount) => (
-              <button
-                key={amount}
-                onClick={() => handleAmountSelect(amount)}
-                className={`p-3 rounded-lg border text-sm font-medium transition-all duration-200 ${
-                  selectedAmount === amount
-                    ? 'bg-green-500 text-white border-green-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                }`}
-              >
-                {formatCurrency(amount)}
-              </button>
-            ))}
-          </div>
-
-          {/* Custom Amount */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Atau masukkan nominal lain
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                Rp
-              </span>
-              <input
-                type="number"
-                value={donationAmount}
-                onChange={(e) => {
-                  setDonationAmount(e.target.value);
-                  setSelectedAmount(null);
-                }}
-                placeholder="0"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-              />
-            </div>
-          </div>
-
-          {/* Donate Button */}
+        {/* Simple Donation Button */}
+        <div className="mb-8">
           <button
-            onClick={handleDonate}
-            disabled={!donationAmount}
-            className="w-full bg-green-500 text-white py-4 rounded-lg font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 hover:transform hover:scale-105"
+            onClick={() => onNavigate('payment')}
+            className="w-full bg-green-500 text-white py-4 rounded-lg font-semibold hover:bg-green-600 transition-all duration-200 hover:transform hover:scale-105"
           >
-            Donasi {donationAmount ? formatCurrency(parseInt(donationAmount)) : ''}
+            Donasi Sekarang
           </button>
         </div>
 

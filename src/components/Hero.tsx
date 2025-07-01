@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Bell, User, Heart, MapPin, TrendingUp } from 'lucide-react';
+import { Search, Heart, MapPin, TrendingUp, User } from 'lucide-react';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -84,6 +84,40 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
     return Math.min((raised / target) * 100, 100);
   };
 
+  // Get category color
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Lingkungan':
+        return 'bg-green-500 text-white';
+      case 'Darurat':
+        return 'bg-red-500 text-white';
+      case 'Pendidikan':
+        return 'bg-blue-500 text-white';
+      case 'Kesehatan':
+        return 'bg-pink-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+
+  // Get filter button color for active state
+  const getFilterActiveColor = (tag: string) => {
+    switch (tag) {
+      case 'Lingkungan':
+        return 'bg-green-500 text-white';
+      case 'Darurat':
+        return 'bg-red-500 text-white';
+      case 'Pendidikan':
+        return 'bg-blue-500 text-white';
+      case 'Kesehatan':
+        return 'bg-pink-500 text-white';
+      case 'Semua':
+        return 'bg-gray-700 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+
   // Filter campaigns based on active filter and search query
   const filteredCampaigns = campaigns.filter(campaign => {
     const matchesFilter = activeFilter === 'Semua' || campaign.category === activeFilter;
@@ -110,9 +144,6 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
             
             <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                <Bell className="w-6 h-6" />
-              </button>
               <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
                 <User className="w-6 h-6" />
               </button>
@@ -144,7 +175,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => handleFilterClick(tag)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 tag === activeFilter
-                  ? 'bg-green-500 text-white'
+                  ? getFilterActiveColor(tag)
                   : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -197,7 +228,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    <span className={`${getCategoryColor(campaign.category)} px-3 py-1 rounded-full text-xs font-medium`}>
                       {campaign.category}
                     </span>
                   </div>

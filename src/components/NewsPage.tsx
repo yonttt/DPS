@@ -9,49 +9,49 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
   const newsArticles = [
     {
       id: 1,
-      title: 'Bantuan Darurat untuk Korban Gempa Cianjur Terus Berdatangan',
-      excerpt: 'Tim relawan dan bantuan logistik terus mengalir ke daerah terdampak gempa di Cianjur. Lebih dari 500 keluarga telah menerima bantuan dasar.',
+      title: 'Emergency Aid for Cianjur Earthquake Victims Continues to Arrive',
+      excerpt: 'Volunteer teams and logistical aid continue to flow to earthquake-affected areas in Cianjur. More than 500 families have received basic assistance.',
       image: 'https://images.pexels.com/photos/6995253/pexels-photo-6995253.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: '2024-01-15',
       location: 'Cianjur, Indonesia',
-      readTime: '3 menit',
-      category: 'Bencana Alam'
+      readTime: '3 min',
+      category: 'Natural Disaster'
     },
     {
       id: 2,
-      title: 'Program Rehabilitasi Sekolah di Lombok Mencapai 80%',
-      excerpt: 'Pembangunan kembali sekolah-sekolah yang rusak akibat gempa di Lombok mencapai progress 80%. Diharapkan selesai dalam 2 bulan ke depan.',
+      title: 'School Rehabilitation Program in Lombok Reaches 80%',
+      excerpt: 'Reconstruction of schools damaged by earthquakes in Lombok reaches 80% progress. Expected to be completed in the next 2 months.',
       image: 'https://images.pexels.com/photos/8197530/pexels-photo-8197530.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: '2024-01-14',
       location: 'Lombok, Indonesia',
-      readTime: '5 menit',
-      category: 'Pendidikan'
+      readTime: '5 min',
+      category: 'Education'
     },
     {
       id: 3,
-      title: 'Aksi Bersih-Bersih Sungai di Jakarta Libatkan 1000 Relawan',
-      excerpt: 'Aksi gotong royong membersihkan sungai-sungai di Jakarta berhasil mengumpulkan 5 ton sampah. Partisipasi masyarakat sangat antusias.',
+      title: 'River Cleanup Action in Jakarta Involves 1000 Volunteers',
+      excerpt: 'Community action to clean rivers in Jakarta successfully collected 5 tons of waste. Community participation was very enthusiastic.',
       image: 'https://images.pexels.com/photos/9324337/pexels-photo-9324337.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: '2024-01-13',
       location: 'Jakarta, Indonesia',
-      readTime: '4 menit',
-      category: 'Lingkungan'
+      readTime: '4 min',
+      category: 'Environment'
     },
     {
       id: 4,
-      title: 'Bantuan Medis Gratis Untuk Anak-Anak di Daerah Terpencil',
-      excerpt: 'Tim medis relawan memberikan pelayanan kesehatan gratis untuk anak-anak di daerah terpencil Papua. Lebih dari 200 anak telah diperiksa.',
+      title: 'Free Medical Aid for Children in Remote Areas',
+      excerpt: 'Volunteer medical teams provide free healthcare services for children in remote areas of Papua. More than 200 children have been examined.',
       image: 'https://images.pexels.com/photos/6303773/pexels-photo-6303773.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: '2024-01-12',
       location: 'Papua, Indonesia',
-      readTime: '6 menit',
-      category: 'Kesehatan'
+      readTime: '6 min',
+      category: 'Health'
     }
   ];
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('id-ID', {
+    return date.toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -60,10 +60,10 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      'Bencana Alam': 'bg-red-500',
-      'Pendidikan': 'bg-blue-500',
-      'Lingkungan': 'bg-green-500',
-      'Kesehatan': 'bg-purple-500'
+      'Natural Disaster': 'bg-red-500',
+      'Education': 'bg-blue-500',
+      'Environment': 'bg-green-500',
+      'Health': 'bg-purple-500'
     };
     return colors[category as keyof typeof colors] || 'bg-gray-500';
   };
@@ -79,10 +79,10 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Kembali</span>
+              <span>Back</span>
             </button>
             
-            <h1 className="text-xl font-bold text-gray-800">Berita & Update</h1>
+            <h1 className="text-xl font-bold text-gray-800">News & Updates</h1>
             
             <div className="w-20"></div> {/* Spacer for center alignment */}
           </div>
@@ -131,7 +131,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
               </p>
               
               <button className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors">
-                Baca Selengkapnya
+                Read More
                 <ExternalLink className="w-4 h-4" />
               </button>
             </div>
@@ -185,7 +185,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
                   </div>
                   
                   <button className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors">
-                    Baca →
+                    Read →
                   </button>
                 </div>
               </div>
@@ -196,7 +196,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ onNavigate }) => {
         {/* Load More Button */}
         <div className="text-center mt-12">
           <button className="bg-white text-gray-700 px-8 py-3 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors font-medium">
-            Muat Lebih Banyak
+            Load More
           </button>
         </div>
       </div>

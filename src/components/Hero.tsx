@@ -7,68 +7,68 @@ interface HomePageProps {
 
 const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('Semua');
+  const [activeFilter, setActiveFilter] = useState('All');
 
   const campaigns = [
     {
       id: 1,
-      title: 'Selamatkan Akses Air Bersih di Tambora',
+      title: 'Save Clean Water Access in Tambora',
       location: 'Jakarta, Indonesia',
       raised: 2109000,
       target: 5000000,
       daysLeft: 30,
       image: 'https://images.pexels.com/photos/6647039/pexels-photo-6647039.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Lingkungan'
+      category: 'Environment'
     },
     {
       id: 2,
-      title: 'Bantu Korban Gempa Cianjur',
+      title: 'Help Cianjur Earthquake Victims',
       location: 'Cianjur, Indonesia',
       raised: 15000000,
       target: 25000000,
       daysLeft: 15,
       image: 'https://images.pexels.com/photos/6995253/pexels-photo-6995253.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Darurat'
+      category: 'Emergency'
     },
     {
       id: 3,
-      title: 'Rehabilitasi Sekolah di Lombok',
+      title: 'School Rehabilitation in Lombok',
       location: 'Lombok, Indonesia',
       raised: 8500000,
       target: 12000000,
       daysLeft: 45,
       image: 'https://images.pexels.com/photos/8197530/pexels-photo-8197530.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Pendidikan'
+      category: 'Education'
     },
     {
       id: 4,
-      title: 'Operasi Jantung untuk Anak-Anak',
+      title: 'Heart Surgery for Children',
       location: 'Surabaya, Indonesia',
       raised: 5000000,
       target: 15000000,
       daysLeft: 20,
       image: 'https://images.pexels.com/photos/4167541/pexels-photo-4167541.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Kesehatan'
+      category: 'Health'
     },
     {
       id: 5,
-      title: 'Reboisasi Hutan Kalimantan',
+      title: 'Kalimantan Forest Reforestation',
       location: 'Kalimantan, Indonesia',
       raised: 3500000,
       target: 10000000,
       daysLeft: 60,
       image: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Lingkungan'
+      category: 'Environment'
     },
     {
       id: 6,
-      title: 'Beasiswa untuk Anak Kurang Mampu',
+      title: 'Scholarships for Underprivileged Children',
       location: 'Yogyakarta, Indonesia',
       raised: 7200000,
       target: 20000000,
       daysLeft: 40,
       image: 'https://images.pexels.com/photos/289740/pexels-photo-289740.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Pendidikan'
+      category: 'Education'
     }
   ];
 
@@ -87,13 +87,13 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
   // Get category color
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Lingkungan':
+      case 'Environment':
         return 'bg-green-500 text-white';
-      case 'Darurat':
+      case 'Emergency':
         return 'bg-red-500 text-white';
-      case 'Pendidikan':
+      case 'Education':
         return 'bg-blue-500 text-white';
-      case 'Kesehatan':
+      case 'Health':
         return 'bg-pink-500 text-white';
       default:
         return 'bg-gray-500 text-white';
@@ -103,15 +103,15 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
   // Get filter button color for active state
   const getFilterActiveColor = (tag: string) => {
     switch (tag) {
-      case 'Lingkungan':
+      case 'Environment':
         return 'bg-green-500 text-white';
-      case 'Darurat':
+      case 'Emergency':
         return 'bg-red-500 text-white';
-      case 'Pendidikan':
+      case 'Education':
         return 'bg-blue-500 text-white';
-      case 'Kesehatan':
+      case 'Health':
         return 'bg-pink-500 text-white';
-      case 'Semua':
+      case 'All':
         return 'bg-gray-700 text-white';
       default:
         return 'bg-gray-500 text-white';
@@ -120,7 +120,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   // Filter campaigns based on active filter and search query
   const filteredCampaigns = campaigns.filter(campaign => {
-    const matchesFilter = activeFilter === 'Semua' || campaign.category === activeFilter;
+    const matchesFilter = activeFilter === 'All' || campaign.category === activeFilter;
     const matchesSearch = campaign.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          campaign.location.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
@@ -140,7 +140,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                 <Heart className="w-6 h-6 text-white fill-current" />
               </div>
-              <h1 className="text-xl font-bold text-gray-800">Ayo Bantu Mereka!</h1>
+              <h1 className="text-xl font-bold text-gray-800">Let's Help Them!</h1>
             </div>
             
             <div className="flex items-center gap-4">
@@ -161,7 +161,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari kampanye..."
+              placeholder="Search campaigns..."
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
             />
           </div>
@@ -169,7 +169,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         {/* Filter Tags */}
         <div className="flex flex-wrap gap-2 mb-8">
-          {['Semua', 'Lingkungan', 'Kesehatan', 'Pendidikan', 'Darurat'].map((tag) => (
+          {['All', 'Environment', 'Health', 'Education', 'Emergency'].map((tag) => (
             <button
               key={tag}
               onClick={() => handleFilterClick(tag)}
@@ -190,21 +190,21 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="w-5 h-5" />
-                <span className="text-sm font-medium">Kampanye Unggulan</span>
+                <span className="text-sm font-medium">Featured Campaign</span>
               </div>
-              <h2 className="text-2xl font-bold mb-2">Bantu Korban Banjir Jakarta</h2>
+              <h2 className="text-2xl font-bold mb-2">Help Jakarta Flood Victims</h2>
               <p className="text-green-100 mb-4">
-                Bersama-sama kita bantu saudara kita yang terdampak banjir di Jakarta
+                Together we help our brothers and sisters affected by floods in Jakarta
               </p>
               <div className="flex items-center gap-4">
                 <div className="bg-white/20 px-4 py-2 rounded-full">
-                  <span className="text-sm">60% tercapai</span>
+                  <span className="text-sm">60% achieved</span>
                 </div>
                 <button 
                   onClick={() => onNavigate('donation')}
                   className="bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors"
                 >
-                  Donasi Sekarang
+                  Donate Now
                 </button>
               </div>
             </div>
@@ -245,30 +245,29 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
                   </div>
 
                   <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Terkumpul</span>
-                      <span className="font-semibold text-gray-800">
-                        {getProgressPercentage(campaign.raised, campaign.target).toFixed(0)}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${getProgressPercentage(campaign.raised, campaign.target)}%` }}
-                      ></div>
-                    </div>
+                    <div className="flex justify-between text-sm mb-2">                    <span className="text-gray-600">Collected</span>
+                    <span className="font-semibold text-gray-800">
+                      {getProgressPercentage(campaign.raised, campaign.target).toFixed(0)}%
+                    </span>
                   </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${getProgressPercentage(campaign.raised, campaign.target)}%` }}
+                    ></div>
+                  </div>
+                </div>
 
-                  <div className="flex justify-between items-center text-sm">
-                    <div>
-                      <p className="font-bold text-gray-800">
-                        {formatCurrency(campaign.raised)}
-                      </p>
-                      <p className="text-gray-500">dari {formatCurrency(campaign.target)}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-gray-800">{campaign.daysLeft}</p>
-                      <p className="text-gray-500">hari lagi</p>
+                <div className="flex justify-between items-center text-sm">
+                  <div>
+                    <p className="font-bold text-gray-800">
+                      {formatCurrency(campaign.raised)}
+                    </p>
+                    <p className="text-gray-500">of {formatCurrency(campaign.target)}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-gray-800">{campaign.daysLeft}</p>
+                    <p className="text-gray-500">days left</p>
                     </div>
                   </div>
                 </div>
@@ -280,10 +279,10 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <Search className="w-12 h-12 mx-auto mb-4" />
               </div>
               <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                Tidak ada kampanye ditemukan
+                No campaigns found
               </h3>
               <p className="text-gray-500">
-                Coba ubah filter atau kata kunci pencarian Anda
+                Try changing your filter or search keywords
               </p>
             </div>
           )}

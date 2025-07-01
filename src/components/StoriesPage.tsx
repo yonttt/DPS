@@ -9,10 +9,10 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
   const stories = [
     {
       id: 1,
-      author: 'Qurnia Ari Ruha dan Kampung Wapnor',
+      author: 'Qurnia Ari Ruha and Wapnor Village',
       avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
       date: '2024-01-15',
-      content: 'Alhamdulillah, berkat bantuan dari teman-teman semua, kini warga Kampung Wapnor sudah bisa menikmati air bersih setiap hari. Terima kasih untuk semua dukungan yang luar biasa! 🙏',
+      content: 'Alhamdulillah, thanks to the help from all friends, now the residents of Wapnor Village can enjoy clean water every day. Thank you for all the incredible support! 🙏',
       image: 'https://images.pexels.com/photos/6647000/pexels-photo-6647000.jpeg?auto=compress&cs=tinysrgb&w=800',
       likes: 45,
       comments: 12,
@@ -20,10 +20,10 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
     },
     {
       id: 2,
-      author: 'Pulung Sulistiyo - Relawan Gempa',
+      author: 'Pulung Sulistiyo - Earthquake Volunteer',
       avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=100',
       date: '2024-01-14',
-      content: 'Hari ini kami berhasil mendistribusikan 200 paket bantuan untuk korban gempa di Cianjur. Semangat mereka dalam menghadapi cobaan ini benar-benar menginspirasi. Mari terus berkarya untuk sesama! ❤️',
+      content: 'Today we successfully distributed 200 aid packages for earthquake victims in Cianjur. Their spirit in facing this challenge is truly inspiring. Let\'s continue working for each other! ❤️',
       image: 'https://images.pexels.com/photos/6995470/pexels-photo-6995470.jpeg?auto=compress&cs=tinysrgb&w=800',
       likes: 78,
       comments: 25,
@@ -31,10 +31,10 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
     },
     {
       id: 3,
-      author: 'Elsa Indah Sari - Guru SDN 03',
+      author: 'Elsa Indah Sari - Teacher at SDN 03',
       avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
       date: '2024-01-13',
-      content: 'Sekolah kami di Lombok akhirnya selesai direnovasi! Anak-anak sangat senang bisa belajar di ruang kelas yang nyaman lagi. Terima kasih untuk semua donatur yang telah membantu mewujudkan ini 📚✨',
+      content: 'Our school in Lombok is finally renovated! The children are very happy to be able to study in comfortable classrooms again. Thank you to all donors who helped make this happen 📚✨',
       image: 'https://images.pexels.com/photos/8197627/pexels-photo-8197627.jpeg?auto=compress&cs=tinysrgb&w=800',
       likes: 92,
       comments: 18,
@@ -42,10 +42,10 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
     },
     {
       id: 4,
-      author: 'Ahmad Supratman - Ketua RT 05',
+      author: 'Ahmad Supratman - RT 05 Chairman',
       avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
       date: '2024-01-12',
-      content: 'Gotong royong membersihkan sungai kemarin berhasil mengangkat 5 ton sampah! Lingkungan kita jadi lebih bersih dan sehat. Bangga dengan semangat warga yang luar biasa 🌱',
+      content: 'Yesterday\'s river cleanup successfully removed 5 tons of waste! Our environment is now cleaner and healthier. Proud of the incredible community spirit 🌱',
       image: 'https://images.pexels.com/photos/9324338/pexels-photo-9324338.jpeg?auto=compress&cs=tinysrgb&w=800',
       likes: 56,
       comments: 8,
@@ -55,7 +55,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('id-ID', {
+    return date.toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -73,10 +73,10 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Kembali</span>
+              <span>Back</span>
             </button>
             
-            <h1 className="text-xl font-bold text-gray-800">Cerita & Testimoni</h1>
+            <h1 className="text-xl font-bold text-gray-800">Stories & Testimonials</h1>
             
             <div className="w-20"></div> {/* Spacer for center alignment */}
           </div>
@@ -146,7 +146,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
                   </div>
                   
                   <button className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors">
-                    Baca Selengkapnya
+                    Read More
                   </button>
                 </div>
               </div>
@@ -157,19 +157,19 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onNavigate }) => {
         {/* Load More Button */}
         <div className="text-center mt-12">
           <button className="bg-white text-gray-700 px-8 py-3 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors font-medium">
-            Muat Lebih Banyak Cerita
+            Load More Stories
           </button>
         </div>
 
         {/* Share Your Story CTA */}
         <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-8 text-white text-center mt-12">
           <Heart className="w-12 h-12 mx-auto mb-4 fill-current" />
-          <h2 className="text-2xl font-bold mb-2">Bagikan Cerita Anda</h2>
+          <h2 className="text-2xl font-bold mb-2">Share Your Story</h2>
           <p className="text-green-100 mb-6">
-            Inspirasi cerita Anda bisa memotivasi orang lain untuk berbuat kebaikan
+            Your inspiring story can motivate others to do good deeds
           </p>
           <button className="bg-white text-green-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-            Tulis Cerita
+            Write Story
           </button>
         </div>
       </div>

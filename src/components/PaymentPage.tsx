@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Check, CheckCircle, X } from 'lucide-react';
 
 interface PaymentPageProps {
   onNavigate: (page: string) => void;
@@ -14,6 +14,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const quickAmounts = [10000, 20000, 50000, 100000, 200000, 500000];
 
@@ -66,8 +67,20 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       setCurrentStep('method');
     } else if (currentStep === 'method') {
       setCurrentStep('success');
+      // Show notification when donation is successful
+      setShowNotification(true);
     }
   };
+
+  // Auto-hide notification after 5 seconds
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showNotification]);
 
   const handleBackStep = () => {
     if (currentStep === 'method') {
@@ -80,18 +93,18 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const getStepTitle = () => {
     switch (currentStep) {
       case 'amount':
-        return 'Masukkan Nominal Donasi';
+        return 'Enter Donation Amount';
       case 'method':
-        return 'Pilih Metode Pembayaran';
+        return 'Choose Payment Method';
       case 'success':
-        return 'Donasi Berhasil';
+        return 'Donation Successful';
       default:
         return 'Payment';
     }
   };
 
   const renderProgressBar = () => {
-    const steps = ['Nominal Donasi', 'Konfirmasi', 'Selesai'];
+    const steps = ['Donation Amount', 'Confirmation', 'Complete'];
     const currentStepIndex = currentStep === 'amount' ? 0 : currentStep === 'method' ? 1 : 2;
 
     return (
@@ -146,7 +159,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
           <div className="text-3xl font-bold text-gray-800 mb-2">
             Rp {donationAmount ? parseInt(donationAmount).toLocaleString('id-ID') : '0'}
           </div>
-          <div className="text-gray-500 text-sm">Masukkan nominal donasi</div>
+          <div className="text-gray-500 text-sm">Enter donation amount</div>
         </div>
       </div>
 
@@ -178,14 +191,14 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
               setSelectedAmount(parseInt(e.target.value) || 0);
             }}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            placeholder="Masukkan nominal lain"
+            placeholder="Enter custom amount"
           />
         </div>
 
         {/* Message Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tinggalkan Pesan untuk Komunitas (Opsional)
+            Leave a Message for the Community (Optional)
           </label>
           <textarea
             value={message}
@@ -193,7 +206,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
             rows={3}
             maxLength={200}
-            placeholder="Pesan ini akan dibaca bersama dengan Anda. Bisa berupa harapan, doa, atau dukungan lain."
+            placeholder="This message will be shared with others. It can be hopes, prayers, or other support."
           />
           <div className="text-right text-xs text-gray-500 mt-1">
             {message.length}/200
@@ -210,12 +223,12 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
             className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
           />
           <label htmlFor="anonymous" className="text-sm text-gray-700">
-            Donasi sebagai Anonim
+            Donate as Anonymous
           </label>
         </div>
 
         <div className="text-xs text-gray-500">
-          100% dana disalurkan ke komunitas*
+          100% of funds go to the community*
         </div>
       </div>
     </div>
@@ -280,12 +293,12 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Donasi Berhasil</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Donation Successful</h2>
         <p className="text-gray-600 mb-6">
-          Terima kasih!<br />
-          Donasikmu telah berhasil dikirim. Dukunganmu akan<br />
-          sangat berarti bagi komunitas yang sedang berjuang<br />
-          menghadapi musibah mereka saat ini.
+          Thank you!<br />
+          Your donation has been successfully sent. Your support will<br />
+          mean a lot to the community that is currently struggling<br />
+          to face their current challenges.
         </p>
       </div>
 
@@ -293,18 +306,18 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       <div className="bg-white rounded-2xl p-6 border border-gray-200">
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-gray-600">Nominal Donasi:</span>
+            <span className="text-gray-600">Donation Amount:</span>
             <span className="font-semibold">{formatCurrency(parseInt(donationAmount))}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Metode Pembayaran:</span>
+            <span className="text-gray-600">Payment Method:</span>
             <span className="font-semibold">
               {paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'BCA'}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Status:</span>
-            <span className="text-green-600 font-semibold">Berhasil</span>
+            <span className="text-green-600 font-semibold">Successful</span>
           </div>
         </div>
       </div>
@@ -313,7 +326,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
         onClick={() => onNavigate('home')}
         className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 transition-colors"
       >
-        Lihat Donasi Lain
+        View Other Donations
       </button>
     </div>
   );
@@ -362,12 +375,28 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
               (currentStep === 'amount' && !donationAmount) ||
               (currentStep === 'method' && !selectedPaymentMethod)
             }
-            className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200"
-          >
-            Lanjut
+            className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200"            >
+            Continue
           </button>
         )}
       </div>
+
+      {/* Success Notification */}
+      {showNotification && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg transform transition-all duration-300 ease-in-out animate-slide-in flex items-center gap-3 z-50">
+          <CheckCircle className="w-6 h-6 flex-shrink-0" />
+          <div>
+            <p className="font-semibold">Donation Successful!</p>
+            <p className="text-sm text-green-100">Thank you for your contribution</p>
+          </div>
+          <button
+            onClick={() => setShowNotification(false)}
+            className="ml-2 text-green-100 hover:text-white transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

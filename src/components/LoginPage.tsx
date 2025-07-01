@@ -56,12 +56,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <Heart className="w-8 h-8 text-white fill-current" />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
-            {isLogin ? 'Lanjutkan Perjuanganmu!' : 'Bergabung dengan Kami'}
+            {isLogin ? 'Continue Your Journey!' : 'Join Us Today'}
           </h1>
           <p className="text-gray-600 text-sm">
             {isLogin 
-              ? 'Masuk untuk terus menyebarkan kebaikan dengan mudah dan aman.'
-              : 'Daftar untuk mulai membuat dampak positif bersama kami.'
+              ? 'Sign in to continue spreading kindness easily and securely.'
+              : 'Sign up to start making a positive impact with us.'
             }
           </p>
         </div>
@@ -70,7 +70,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nama Lengkap
+                Full Name
               </label>
               <input
                 type="text"
@@ -78,7 +78,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 value={formData.name}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                placeholder="Masukkan nama lengkap"
+                placeholder="Enter your full name"
                 required
               />
             </div>
@@ -94,7 +94,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               value={formData.email}
               onChange={handleInputChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-              placeholder="contoh@gmail.com"
+              placeholder="example@gmail.com"
               required
             />
           </div>
@@ -110,7 +110,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                placeholder="Masukkan password"
+                placeholder="Enter your password"
                 required
               />
               <button
@@ -129,7 +129,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 type="button"
                 className="text-sm text-green-600 hover:text-green-700 font-medium"
               >
-                Lupa Password?
+                Forgot Password?
               </button>
             </div>
           )}
@@ -138,7 +138,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             type="submit"
             className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
           >
-            {isLogin ? 'Masuk' : 'Daftar'}
+            {isLogin ? 'Sign In' : 'Sign Up'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </form>
@@ -150,7 +150,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">atau</span>
+              <span className="px-2 bg-white text-gray-500">or</span>
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           {isGoogleLoading ? (
             <>
               <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
-              Sedang memproses...
+              Processing...
             </>
           ) : (
             <>
@@ -178,26 +178,26 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-              {isLogin ? 'Masuk dengan Google' : 'Daftar dengan Google'}
+              {isLogin ? 'Sign in with Google' : 'Sign up with Google'}
             </>
           )}
         </button>
 
         <div className="mt-8 text-center">
           <p className="text-gray-600 text-sm">
-            {isLogin ? 'Belum punya akun?' : 'Sudah punya akun?'}
+            {isLogin ? "Don't have an account?" : 'Already have an account?'}
             <button
               onClick={() => setIsLogin(!isLogin)}
               className="text-green-600 hover:text-green-700 font-semibold ml-1"
             >
-              {isLogin ? 'Daftar disini' : 'Masuk disini'}
+              {isLogin ? 'Sign up here' : 'Sign in here'}
             </button>
           </p>
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-xs text-gray-500 text-center">
-            Dengan melanjutkan, kamu menyetujui syarat dan ketentuan serta kebijakan privasi kami.
+            By continuing, you agree to our terms and conditions and privacy policy.
           </p>
         </div>
       </div>

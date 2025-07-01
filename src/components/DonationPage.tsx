@@ -17,7 +17,7 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Kembali</span>
+              <span>Back</span>
             </button>
             
             <div className="w-8"></div> {/* Spacer for balance */}
@@ -35,7 +35,7 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
           />
           <div className="absolute top-4 left-4">
             <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-              Darurat
+              Emergency
             </span>
           </div>
         </div>
@@ -43,7 +43,7 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
         {/* Campaign Info */}
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-            Selamatkan Akses Air Bersih di Tambora
+            Save Clean Water Access in Tambora
           </h1>
           
           <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
@@ -53,11 +53,11 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>30 hari lagi</span>
+              <span>30 days left</span>
             </div>
             <div className="flex items-center gap-1">
               <Users className="w-4 h-4" />
-              <span>1,247 donatur</span>
+              <span>1,247 donors</span>
             </div>
           </div>
 
@@ -66,11 +66,11 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
             <div className="flex justify-between items-center mb-4">
               <div>
                 <p className="text-2xl font-bold text-gray-800">Rp2.109.000</p>
-                <p className="text-gray-600">terkumpul dari Rp5.000.000</p>
+                <p className="text-gray-600">collected from Rp5,000,000</p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-green-500">42%</p>
-                <p className="text-gray-600">tercapai</p>
+                <p className="text-gray-600">achieved</p>
               </div>
             </div>
             
@@ -91,31 +91,31 @@ const DonationPage: React.FC<DonationPageProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('payment')}
             className="w-full bg-green-500 text-white py-4 rounded-lg font-semibold hover:bg-green-600 transition-all duration-200 hover:transform hover:scale-105"
           >
-            Donasi Sekarang
+            Donate Now
           </button>
         </div>
 
         {/* Description */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Deskripsi</h3>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Description</h3>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 leading-relaxed mb-4">
-              Di tengah-tengah hiruk pikuk kota Jakarta, masih banyak warga di daerah Tambora 
-              yang kesulitan mendapatkan akses air bersih yang layak. Krisis air bersih ini 
-              telah berlangsung bertahun-tahun dan semakin memburuk setiap harinya.
+              In the midst of Jakarta's bustling city life, many residents in the Tambora area 
+              still struggle to access proper clean water. This clean water crisis has been 
+              ongoing for years and continues to worsen each day.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Bantuan Anda sangat berarti untuk:
+              Your support will help with:
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
-              <li>Penyediaan tanki air bersih di 10 titik strategis</li>
-              <li>Pembangunan sistem filtrasi air sederhana</li>
-              <li>Distribusi air bersih harian untuk 500 keluarga</li>
-              <li>Edukasi kebersihan dan kesehatan lingkungan</li>
+              <li>Providing clean water tanks at 10 strategic locations</li>
+              <li>Building simple water filtration systems</li>
+              <li>Daily clean water distribution for 500 families</li>
+              <li>Environmental health and hygiene education</li>
             </ul>
             <p className="text-gray-600 leading-relaxed">
-              Setiap rupiah yang Anda donasikan akan langsung tersalurkan untuk membantu 
-              saudara-saudara kita di Tambora mendapatkan haknya akan air bersih yang layak.
+              Every rupiah you donate will be directly channeled to help 
+              our brothers and sisters in Tambora get their right to proper clean water.
             </p>
           </div>
         </div>

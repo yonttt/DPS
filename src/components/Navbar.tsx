@@ -8,10 +8,10 @@ interface NavigationProps {
 
 const Navbar: React.FC<NavigationProps> = ({ currentPage, onNavigate }) => {
   const navItems = [
-    { id: 'home', label: 'Beranda', icon: Home },
-    { id: 'donation', label: 'Donasi', icon: Heart },
-    { id: 'news', label: 'Berita', icon: Newspaper },
-    { id: 'stories', label: 'Cerita', icon: BookOpen }
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'donation', label: 'Donate', icon: Heart },
+    { id: 'news', label: 'News', icon: Newspaper },
+    { id: 'stories', label: 'Stories', icon: BookOpen }
   ];
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart, MessageCircle, Share2, User, Calendar } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Calendar } from 'lucide-react';
 
 interface StoriesPageProps {
   onNavigate: (page: string) => void;

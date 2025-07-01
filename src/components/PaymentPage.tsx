@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, CreditCard, Smartphone, Building2, Wallet } from 'lucide-react';
+import { ArrowLeft, Check, Smartphone, Building2, Wallet } from 'lucide-react';
 
 interface PaymentPageProps {
   onNavigate: (page: string) => void;

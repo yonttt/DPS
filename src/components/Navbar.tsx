@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, DollarSign, Newspaper, BookOpen, Heart } from 'lucide-react';
+import { Home, Newspaper, BookOpen, Heart } from 'lucide-react';
 
 interface NavigationProps {
   currentPage: string;

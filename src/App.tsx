@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LoginPage from './components/LoginPage';
 import Hero from './components/Hero';
 import DonationPage from './components/DonationPage';
@@ -18,10 +18,11 @@ function App() {
     setCurrentPage('home');
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentPage('login');
-  };
+  // Future logout functionality
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   setCurrentPage('login');
+  // };
 
   // Create a wrapper function to handle the type conversion
   const handleNavigate = (page: string) => {

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, CheckCircle, X } from 'lucide-react';
+import { ArrowLeft, Check, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface PaymentPageProps {
   onNavigate: (page: string) => void;
 }
 
 type PaymentStep = 'amount' | 'method' | 'success';
+
+interface ErrorState {
+  type: 'amount' | 'payment' | 'network' | 'validation' | null;
+  message: string;
+}
 
 const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const [currentStep, setCurrentStep] = useState<PaymentStep>('amount');
@@ -15,6 +20,9 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [error, setError] = useState<ErrorState>({ type: null, message: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const quickAmounts = [10000, 20000, 50000, 100000, 200000, 500000];
 
@@ -57,18 +65,161 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
     }).format(amount);
   };
 
-  const handleAmountSelect = (amount: number) => {
-    setSelectedAmount(amount);
-    setDonationAmount(amount.toString());
+  // Error handling functions
+  const clearError = () => {
+    setError({ type: null, message: '' });
   };
 
-  const handleNextStep = () => {
+  const showError = (type: ErrorState['type'], message: string) => {
+    setError({ type, message });
+    setTimeout(clearError, 5000); // Auto-clear error after 5 seconds
+  };
+
+  // Validation functions
+  const validateAmount = (amount: string, showErrors: boolean = true): boolean => {
+    const numAmount = parseInt(amount);
+    if (!amount || amount.trim() === '' || isNaN(numAmount)) {
+      if (showErrors) showError('validation', 'Please enter a valid donation amount');
+      return false;
+    }
+    if (numAmount < 0) {
+      if (showErrors) showError('validation', 'Donation amount cannot be negative');
+      return false;
+    }
+    if (numAmount < 1000) {
+      if (showErrors) showError('validation', 'Minimum donation amount is Rp 1,000');
+      return false;
+    }
+    return true;
+  };
+
+  // Helper function to check if amount is valid without showing error
+  const isAmountValid = (amount: string): boolean => {
+    const numAmount = parseInt(amount);
+    return !!(amount && 
+           amount.trim() !== '' && 
+           !isNaN(numAmount) && 
+           numAmount >= 1000 && 
+           numAmount >= 0);
+  };
+
+  const validateMessage = (msg: string, showErrors: boolean = true): boolean => {
+    if (msg.length > 200) {
+      if (showErrors) showError('validation', 'Message cannot exceed 200 characters');
+      return false;
+    }
+    // Check for inappropriate content (basic check)
+    const inappropriateWords = ['spam', 'scam', 'fake'];
+    const hasInappropriate = inappropriateWords.some(word => 
+      msg.toLowerCase().includes(word)
+    );
+    if (hasInappropriate) {
+      if (showErrors) showError('validation', 'Message contains inappropriate content');
+      return false;
+    }
+    return true;
+  };
+
+  // Simulate payment processing with error handling
+  const processPayment = async (): Promise<boolean> => {
+    setIsLoading(true);
+    clearError();
+
+    try {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simulate random payment failures for demonstration
+      const shouldFail = Math.random() < 0.3; // 30% failure rate for demo
+      
+      if (shouldFail) {
+        throw new Error('Payment processing failed');
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Payment error:', error);
+      
+      if (retryCount < 2) {
+        showError('payment', `Payment failed. Retry ${retryCount + 1}/3 attempts`);
+        setRetryCount(prev => prev + 1);
+      } else {
+        showError('payment', 'Payment failed after multiple attempts. Please try a different payment method.');
+        setRetryCount(0);
+      }
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAmountSelect = (amount: number) => {
+    clearError();
+    setSelectedAmount(amount);
+    setDonationAmount(amount.toString());
+    // Don't validate here since quick amounts are pre-validated and valid
+  };
+
+  const handleAmountChange = (value: string) => {
+    setDonationAmount(value);
+    setSelectedAmount(parseInt(value) || 0);
+    
+    // Clear any existing errors when user starts typing
+    if (error.type === 'validation') {
+      clearError();
+    }
+  };
+
+  // Handle input blur to validate amount only when user leaves the field
+  const handleAmountBlur = (value: string) => {
+    // Don't show global errors, let individual field handle it
+    validateAmount(value, false);
+  };
+
+  const handleMessageChange = (value: string) => {
+    setMessage(value);
+    
+    // Clear any existing errors when user starts typing
+    if (error.type === 'validation') {
+      clearError();
+    }
+  };
+
+  // Handle message blur to validate only when user leaves the field
+  const handleMessageBlur = (value: string) => {
+    // Don't show global errors, let individual field handle it
+    validateMessage(value, false);
+  };
+
+  const handleNextStep = async () => {
     if (currentStep === 'amount') {
+      // Clear any existing errors first
+      clearError();
+      
+      // Validate amount
+      if (!validateAmount(donationAmount)) {
+        return; // Stop here if amount validation fails
+      }
+      
+      // Validate message
+      if (!validateMessage(message)) {
+        return; // Stop here if message validation fails
+      }
+      
+      // Only proceed if both validations pass
       setCurrentStep('method');
     } else if (currentStep === 'method') {
-      setCurrentStep('success');
-      // Show notification when donation is successful
-      setShowNotification(true);
+      if (!selectedPaymentMethod) {
+        showError('validation', 'Please select a payment method');
+        return;
+      }
+      
+      const paymentSuccess = await processPayment();
+      if (paymentSuccess) {
+        setCurrentStep('success');
+        setShowNotification(true);
+        setRetryCount(0); // Reset retry count on success
+      }
     }
   };
 
@@ -81,6 +232,27 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       return () => clearTimeout(timer);
     }
   }, [showNotification]);
+
+  // Check network connectivity
+  useEffect(() => {
+    const handleOnline = () => clearError();
+    const handleOffline = () => {
+      showError('network', 'No internet connection. Please check your network and try again.');
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Check initial network status
+    if (!navigator.onLine) {
+      handleOffline();
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const handleBackStep = () => {
     if (currentStep === 'method') {
@@ -154,12 +326,21 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
   const renderAmountStep = () => (
     <div className="space-y-6">
       {/* Amount Display */}
-      <div className="bg-white rounded-2xl p-6 border-2 border-gray-200">
+      <div className={`bg-white rounded-2xl p-6 border-2 ${
+        donationAmount && !isAmountValid(donationAmount) ? 'border-red-300' : 'border-gray-200'
+      }`}>
         <div className="text-center">
-          <div className="text-3xl font-bold text-gray-800 mb-2">
+          <div className={`text-3xl font-bold mb-2 ${
+            donationAmount && !isAmountValid(donationAmount) ? 'text-red-600' : 'text-gray-800'
+          }`}>
             Rp {donationAmount ? parseInt(donationAmount).toLocaleString('id-ID') : '0'}
           </div>
           <div className="text-gray-500 text-sm">Enter donation amount</div>
+          {donationAmount && !isAmountValid(donationAmount) && (
+            <div className="text-red-500 text-xs mt-2 font-medium">
+              ⚠️ Invalid amount
+            </div>
+          )}
         </div>
       </div>
 
@@ -186,13 +367,30 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
           <input
             type="number"
             value={donationAmount}
-            onChange={(e) => {
-              setDonationAmount(e.target.value);
-              setSelectedAmount(parseInt(e.target.value) || 0);
+            onChange={(e) => handleAmountChange(e.target.value)}
+            onBlur={(e) => handleAmountBlur(e.target.value)}
+            onKeyDown={(e) => {
+              // Prevent negative sign and other invalid characters
+              if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') {
+                e.preventDefault();
+              }
             }}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+              error.type === 'validation' ? 'border-red-300' : 'border-gray-300'
+            }`}
             placeholder="Enter custom amount"
+            min="1000"
+            step="1000"
           />
+          <div className="text-xs text-gray-500 mt-1">
+            Minimum: Rp 1,000
+          </div>
+          {error.type === 'validation' && donationAmount && !isAmountValid(donationAmount) && (
+            <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" />
+              {error.message}
+            </div>
+          )}
         </div>
 
         {/* Message Input */}
@@ -202,15 +400,32 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
           </label>
           <textarea
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+            onChange={(e) => handleMessageChange(e.target.value)}
+            onBlur={(e) => handleMessageBlur(e.target.value)}
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none ${
+              error.type === 'validation' && message.length > 200 ? 'border-red-300' : 'border-gray-300'
+            }`}
             rows={3}
             maxLength={200}
             placeholder="This message will be shared with others. It can be hopes, prayers, or other support."
           />
-          <div className="text-right text-xs text-gray-500 mt-1">
+          <div className={`text-right text-xs mt-1 ${
+            message.length > 180 ? 'text-red-500' : 'text-gray-500'
+          }`}>
             {message.length}/200
           </div>
+          {error.type === 'validation' && message && message.length > 200 && (
+            <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" />
+              Message cannot exceed 200 characters
+            </div>
+          )}
+          {error.type === 'validation' && message && /spam|scam|fake/.test(message.toLowerCase()) && (
+            <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" />
+              Message contains inappropriate content
+            </div>
+          )}
         </div>
 
         {/* Anonymous Checkbox */}
@@ -240,7 +455,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
       <div className="bg-white rounded-2xl p-4 border border-gray-200">
         <div className="text-center">
           <div className="text-2xl font-bold text-gray-800">
-            {formatCurrency(parseInt(donationAmount))}
+            {formatCurrency(parseInt(donationAmount) || 0)}
           </div>
         </div>
       </div>
@@ -250,12 +465,16 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
         {paymentMethods.map((method) => (
           <button
             key={method.id}
-            onClick={() => setSelectedPaymentMethod(method.id)}
+            onClick={() => {
+              clearError();
+              setSelectedPaymentMethod(method.id);
+            }}
+            disabled={isLoading}
             className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
               selectedPaymentMethod === method.id
                 ? 'border-green-500 bg-green-50'
                 : 'border-gray-200 bg-white hover:bg-gray-50'
-            }`}
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -280,6 +499,24 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
           </button>
         ))}
       </div>
+
+      {/* Payment method selection error */}
+      {error.type === 'validation' && error.message.includes('payment method') && (
+        <div className="text-xs text-red-600 flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" />
+          {error.message}
+        </div>
+      )}
+
+      {/* Loading indicator */}
+      {isLoading && (
+        <div className="text-center py-4">
+          <div className="inline-flex items-center gap-2 text-gray-600">
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-green-500 border-t-transparent"></div>
+            Processing payment...
+          </div>
+        </div>
+      )}
     </div>
   );
 
@@ -307,7 +544,9 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
         <div className="space-y-3">
           <div className="flex justify-between">
             <span className="text-gray-600">Donation Amount:</span>
-            <span className="font-semibold">{formatCurrency(parseInt(donationAmount))}</span>
+            <span className="font-semibold">
+              {donationAmount ? formatCurrency(parseInt(donationAmount)) : 'N/A'}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Payment Method:</span>
@@ -319,15 +558,43 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
             <span className="text-gray-600">Status:</span>
             <span className="text-green-600 font-semibold">Successful</span>
           </div>
+          {message && (
+            <div className="pt-3 border-t border-gray-200">
+              <div className="text-left">
+                <span className="text-gray-600 text-sm">Your Message:</span>
+                <p className="text-gray-800 text-sm mt-1 italic">"{message}"</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <button
-        onClick={() => onNavigate('home')}
-        className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 transition-colors"
-      >
-        View Other Donations
-      </button>
+      <div className="space-y-3">
+        <button
+          onClick={() => onNavigate('home')}
+          className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 transition-colors"
+        >
+          View Other Donations
+        </button>
+        
+        <button
+          onClick={() => {
+            // Reset form for new donation
+            setCurrentStep('amount');
+            setDonationAmount('');
+            setSelectedAmount(0);
+            setSelectedPaymentMethod('');
+            setMessage('');
+            setIsAnonymous(false);
+            setShowNotification(false);
+            clearError();
+            setRetryCount(0);
+          }}
+          className="w-full bg-white text-green-600 py-3 rounded-xl font-medium border-2 border-green-200 hover:bg-green-50 transition-colors"
+        >
+          Make Another Donation
+        </button>
+      </div>
     </div>
   );
 
@@ -372,12 +639,34 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
           <button
             onClick={handleNextStep}
             disabled={
-              (currentStep === 'amount' && !donationAmount) ||
-              (currentStep === 'method' && !selectedPaymentMethod)
+              isLoading ||
+              (currentStep === 'amount' && !isAmountValid(donationAmount)) ||
+              (currentStep === 'method' && !selectedPaymentMethod) ||
+              error.type === 'validation'
             }
-            className="w-full bg-green-500 text-white py-4 rounded-xl font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200"            >
+            className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 ${
+              isLoading ||
+              (currentStep === 'amount' && !isAmountValid(donationAmount)) ||
+              (currentStep === 'method' && !selectedPaymentMethod) ||
+              error.type === 'validation'
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-green-500 text-white hover:bg-green-600'
+            }`}
+          >
             Continue
           </button>
+        )}
+
+        {/* Network Error Recovery */}
+        {error.type === 'network' && (
+          <div className="text-center mt-4">
+            <button
+              onClick={() => window.location.reload()}
+              className="text-sm text-blue-600 hover:text-blue-800 underline"
+            >
+              Refresh page to try again
+            </button>
+          </div>
         )}
       </div>
 
@@ -393,7 +682,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ onNavigate }) => {
             onClick={() => setShowNotification(false)}
             className="ml-2 text-green-100 hover:text-white transition-colors"
           >
-            <X className="w-5 h-5" />
+            <CheckCircle className="w-5 h-5" />
           </button>
         </div>
       )}

@@ -12,6 +12,7 @@ type Page = 'login' | 'home' | 'donation' | 'news' | 'stories' | 'payment';
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -25,8 +26,11 @@ function App() {
   // };
 
   // Create a wrapper function to handle the type conversion
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: string, campaignData?: any) => {
     setCurrentPage(page as Page);
+    if (campaignData) {
+      setSelectedCampaign(campaignData);
+    }
   };
 
   const renderPage = () => {
@@ -36,7 +40,7 @@ function App() {
       case 'home':
         return <Hero onNavigate={handleNavigate} />;
       case 'donation':
-        return <DonationPage onNavigate={handleNavigate} />;
+        return <DonationPage onNavigate={handleNavigate} campaignData={selectedCampaign} />;
       case 'news':
         return <NewsPage onNavigate={handleNavigate} />;
       case 'stories':

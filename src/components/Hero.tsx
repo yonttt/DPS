@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Search, Heart, MapPin, TrendingUp, User } from 'lucide-react';
 
 interface HomePageProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, campaignData?: any) => void;
 }
 
 const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
@@ -17,8 +17,10 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       raised: 2109000,
       target: 5000000,
       daysLeft: 30,
-      image: 'https://images.pexels.com/photos/6647039/pexels-photo-6647039.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Environment'
+      image: 'https://images.pexels.com/photos/6647039/pexels-photo-6647039.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      category: 'Environment',
+      description: 'In the midst of Jakarta\'s bustling city life, many residents in the Tambora area still struggle to access proper clean water. This clean water crisis has been ongoing for years and continues to worsen each day. Your support will help provide clean water tanks at strategic locations, build simple water filtration systems, provide daily clean water distribution for 500 families, and environmental health and hygiene education.',
+      impact: 'Provides clean water access for 500 families in need'
     },
     {
       id: 2,
@@ -28,7 +30,9 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       target: 25000000,
       daysLeft: 15,
       image: 'https://images.pexels.com/photos/6995253/pexels-photo-6995253.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Emergency'
+      category: 'Emergency',
+      description: 'The devastating earthquake that struck Cianjur has left thousands of families homeless and in desperate need of assistance. Many homes have been destroyed, and families are struggling to find shelter, food, and clean water. Your donation will help provide emergency relief including temporary shelters, food packages, medical aid, and support for rebuilding efforts.',
+      impact: 'Provides emergency relief and rebuilding support for earthquake victims'
     },
     {
       id: 3,
@@ -38,7 +42,9 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       target: 12000000,
       daysLeft: 45,
       image: 'https://images.pexels.com/photos/8197530/pexels-photo-8197530.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Education'
+      category: 'Education',
+      description: 'Many schools in Lombok were damaged during the recent natural disasters, leaving hundreds of children without proper educational facilities. This campaign aims to rebuild and rehabilitate schools to ensure children can continue their education in a safe and conducive environment. Your support will help rebuild classrooms, provide educational materials, and create a better learning environment.',
+      impact: 'Helps rebuild schools and provides education for 300+ children'
     },
     {
       id: 4,
@@ -48,7 +54,9 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       target: 15000000,
       daysLeft: 20,
       image: 'https://images.pexels.com/photos/4167541/pexels-photo-4167541.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Health'
+      category: 'Health',
+      description: 'Many children with congenital heart defects cannot afford the life-saving surgery they desperately need. These young hearts deserve a chance at a healthy life. Your donation will help cover the costs of heart surgery, medical equipment, post-operative care, and provide hope for families who cannot afford these critical medical procedures.',
+      impact: 'Provides life-saving heart surgery for children in need'
     },
     {
       id: 5,
@@ -58,7 +66,9 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       target: 10000000,
       daysLeft: 60,
       image: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Environment'
+      category: 'Environment',
+      description: 'The forests of Kalimantan are critical for Indonesia\'s ecosystem and the world\'s climate. Years of deforestation have destroyed vast areas of this precious rainforest. This reforestation program aims to plant thousands of native trees, restore wildlife habitats, and help combat climate change while providing sustainable livelihoods for local communities.',
+      impact: 'Plants 10,000+ trees and restores critical rainforest ecosystem'
     },
     {
       id: 6,
@@ -68,7 +78,9 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
       target: 20000000,
       daysLeft: 40,
       image: 'https://images.pexels.com/photos/289740/pexels-photo-289740.jpeg?auto=compress&cs=tinysrgb&w=800',
-      category: 'Education'
+      category: 'Education',
+      description: 'Education is the key to breaking the cycle of poverty, but many talented children from underprivileged families cannot afford to continue their education. This scholarship program provides financial support for school fees, books, uniforms, and other educational needs to ensure these bright minds can pursue their dreams and build a better future.',
+      impact: 'Provides education scholarships for 100+ underprivileged children'
     }
   ];
 
@@ -201,7 +213,18 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <span className="text-sm">60% achieved</span>
                 </div>
                 <button 
-                  onClick={() => onNavigate('donation')}
+                  onClick={() => onNavigate('donation', {
+                    id: 'featured',
+                    title: 'Help Jakarta Flood Victims',
+                    location: 'Jakarta, Indonesia',
+                    raised: 15000000,
+                    target: 25000000,
+                    daysLeft: 20,
+                    image: 'https://images.pexels.com/photos/6995253/pexels-photo-6995253.jpeg?auto=compress&cs=tinysrgb&w=1200',
+                    category: 'Emergency',
+                    description: 'Jakarta is experiencing severe flooding that has affected thousands of families. Many have lost their homes and need immediate assistance for food, clean water, and temporary shelter. Your donation will help provide emergency relief supplies and support to help families get back on their feet.',
+                    impact: 'Your support helps provide emergency aid to flood victims'
+                  })}
                   className="bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors"
                 >
                   Donate Now
@@ -219,7 +242,7 @@ const Hero: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div
                 key={campaign.id}
                 className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-                onClick={() => onNavigate('donation')}
+                onClick={() => onNavigate('donation', campaign)}
               >
                 <div className="relative">
                   <img
